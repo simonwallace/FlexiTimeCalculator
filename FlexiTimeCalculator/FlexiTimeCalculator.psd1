@@ -14,5 +14,7 @@
     # Modules to import as nested modules of the module specified in RootModule/ModuleToProcess
     NestedModules = @(
         "Get-FlexiTime.psm1"
+        "Get-FlexiTimeDefaults.psm1"
+        "Set-FlexiTimeDefaults.psm1"
     )
 }
