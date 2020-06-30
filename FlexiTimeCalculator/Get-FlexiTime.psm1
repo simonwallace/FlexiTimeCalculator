@@ -2,30 +2,30 @@ function Get-FlexiTime {
     [CmdletBinding()]
     param (
         [Parameter()]
-        [DateTime]
+        [Nullable[DateTime]]
         $StartTime,
 
         [Parameter()]
-        [int]
+        [Nullable[int]]
         $LunchLengthInMinutes,
 
         [Parameter()]
-        [DateTime]
+        [Nullable[DateTime]]
         $EndTime,
 
         [Parameter()]
-        [int]
+        [Nullable[int]]
         $RemainingTimeInMinutes,
 
         [Parameter()]
-        [int]
+        [Nullable[int]]
         $WorkingDayInMinutes = 450
     )
 
     # If StartTime is after EndTime, assume that the working day
     # actually spans two different days (e.g. 23:00 - 07:00) 
     # If only time was supplied, PowerShell will default to the current date
-    if ($StartTime -gt $EndTime) {
+    if ($StartTime -and $EndTime -and ($StartTime -gt $EndTime)) {
         if ($StartTime.Date -ne $EndTime.Date) {
             throw "StartTime should be earlier than EndTime."
         }
@@ -34,11 +34,11 @@ function Get-FlexiTime {
     }
 
     if ($LunchLengthInMinutes -le 0) {
-        throw "LunchLengthInMinutes cannot be a negative number."
+        throw "LunchLengthInMinutes must be a positive number."
     }
 
     if ($WorkingDayInMinutes -le 0) {
-        throw "WorkingDayInMinutes cannot be a negative number."
+        throw "WorkingDayInMinutes must be a positive number."
     }
 
     if ($StartTime -and $LunchLengthInMinutes -and $EndTime) {
@@ -60,7 +60,7 @@ function Get-FlexiTime {
         Write-Host "End time: $($EndTime.ToString('HH:mm'))"
     }
 
-    return @{
+    return [ordered]@{
         StartTime = $StartTime;
         LunchLengthInMinutes = $LunchLengthInMinutes;
         EndTime = $EndTime;

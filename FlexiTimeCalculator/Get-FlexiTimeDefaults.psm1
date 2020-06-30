@@ -6,7 +6,7 @@ function Get-FlexiTimeDefaults {
         $FileLocation = "Config.json"
     )
 
-    $defaults = @{}
+    $defaults = [ordered]@{}
 
     if (Test-Path $FileLocation) {
         $json = Get-Content $FileLocation | ConvertFrom-Json
