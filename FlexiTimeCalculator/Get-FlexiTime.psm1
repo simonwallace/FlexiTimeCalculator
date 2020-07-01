@@ -6,7 +6,7 @@ function Get-FlexiTime {
         $StartTime,
 
         [Parameter()]
-        [Nullable[int]]
+        [int]
         $LunchLengthInMinutes,
 
         [Parameter()]
@@ -14,11 +14,11 @@ function Get-FlexiTime {
         $EndTime,
 
         [Parameter()]
-        [Nullable[int]]
+        [int]
         $RemainingTimeInMinutes,
 
         [Parameter()]
-        [Nullable[int]]
+        [int]
         $WorkingDayInMinutes = 450
     )
 
