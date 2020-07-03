@@ -52,7 +52,7 @@ function Get-FlexiTime {
     }
 
     if ($StartTime -and $LunchLengthInMinutes -and $EndTime) {
-        $RemainingTimeInMinutes = $WorkingDayInMinutes - (($EndTime - $StartTime).TotalMinutes - $LunchLengthInMinutes)
+        $RemainingTimeInMinutes += $WorkingDayInMinutes - (($EndTime - $StartTime).TotalMinutes - $LunchLengthInMinutes)
         
         if ($RemainingTimeInMinutes -gt 0) {
             Write-Host "Behind by $RemainingTimeInMinutes minutes." -ForegroundColor Yellow
