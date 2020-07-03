@@ -19,8 +19,18 @@ function Get-FlexiTime {
 
         [Parameter()]
         [int]
-        $WorkingDayInMinutes = 450
+        $WorkingDayInMinutes = 450,
+
+        [Parameter()]
+        [string]
+        $DefaultsFileLocation = "Config.json"
     )
+
+    $defaults = Get-FlexiTimeDefaults $DefaultsFileLocation
+
+    foreach ($key in $defaults.Keys) {
+        Set-Variable $key $defaults[$key]
+    }
 
     # If StartTime is after EndTime, assume that the working day
     # actually spans two different days (e.g. 23:00 - 07:00) 
