@@ -11,7 +11,7 @@ function Set-FlexiTimeDefaults {
 
         [Parameter()]
         [Nullable[int]]
-        $LunchLengthInMinutes,
+        $LunchTimeInMinutes,
 
         [Parameter()]
         [Nullable[DateTime]]

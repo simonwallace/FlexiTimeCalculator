@@ -7,7 +7,7 @@ function Get-FlexiTime {
 
         [Parameter()]
         [int]
-        $LunchLengthInMinutes,
+        $LunchTimeInMinutes,
 
         [Parameter()]
         [Nullable[DateTime]]
@@ -43,16 +43,16 @@ function Get-FlexiTime {
         $EndTime = $EndTime.AddDays(1)
     }
 
-    if ($LunchLengthInMinutes -le 0) {
-        throw "LunchLengthInMinutes must be a positive number."
+    if ($LunchTimeInMinutes -le 0) {
+        throw "LunchTimeInMinutes must be a positive number."
     }
 
     if ($WorkingDayInMinutes -le 0) {
         throw "WorkingDayInMinutes must be a positive number."
     }
 
-    if ($StartTime -and $LunchLengthInMinutes -and $EndTime) {
-        $RemainingTimeInMinutes = $WorkingDayInMinutes - (($EndTime - $StartTime).TotalMinutes - $LunchLengthInMinutes - $CarryOverTimeInMinutes)
+    if ($StartTime -and $LunchTimeInMinutes -and $EndTime) {
+        $RemainingTimeInMinutes = $WorkingDayInMinutes - (($EndTime - $StartTime).TotalMinutes - $LunchTimeInMinutes - $CarryOverTimeInMinutes)
         
         if ($RemainingTimeInMinutes -gt 0) {
             Write-Host "Behind by $RemainingTimeInMinutes minutes." -ForegroundColor Yellow
@@ -64,8 +64,8 @@ function Get-FlexiTime {
             Write-Host "Standard number of hours worked." -ForegroundColor Green
         }
     }
-    elseif ($StartTime -and $LunchLengthInMinutes -and -not $EndTime) {
-        $EndTime = $StartTime.AddMinutes($WorkingDayInMinutes + $LunchLengthInMinutes + $CarryOverTimeInMinutes)
+    elseif ($StartTime -and $LunchTimeInMinutes -and -not $EndTime) {
+        $EndTime = $StartTime.AddMinutes($WorkingDayInMinutes + $LunchTimeInMinutes + $CarryOverTimeInMinutes)
 
         $RemainingTimeInMinutes = 0
 
@@ -74,7 +74,7 @@ function Get-FlexiTime {
 
     return [ordered]@{
         StartTime = $StartTime;
-        LunchLengthInMinutes = $LunchLengthInMinutes;
+        LunchTimeInMinutes = $LunchTimeInMinutes;
         EndTime = $EndTime;
         CarryOverTimeInMinutes = $CarryOverTimeInMinutes;
         WorkingDayInMinutes = $WorkingDayInMinutes;
