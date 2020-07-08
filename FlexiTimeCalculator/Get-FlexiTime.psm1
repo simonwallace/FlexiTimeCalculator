@@ -15,7 +15,7 @@ function Get-FlexiTime {
 
         [Parameter()]
         [int]
-        $RemainingTimeInMinutes,
+        $CarryOverTimeInMinutes,
 
         [Parameter()]
         [int]
@@ -52,7 +52,7 @@ function Get-FlexiTime {
     }
 
     if ($StartTime -and $LunchLengthInMinutes -and $EndTime) {
-        $RemainingTimeInMinutes += $WorkingDayInMinutes - (($EndTime - $StartTime).TotalMinutes - $LunchLengthInMinutes)
+        $RemainingTimeInMinutes = $WorkingDayInMinutes - (($EndTime - $StartTime).TotalMinutes - $LunchLengthInMinutes - $CarryOverTimeInMinutes)
         
         if ($RemainingTimeInMinutes -gt 0) {
             Write-Host "Behind by $RemainingTimeInMinutes minutes." -ForegroundColor Yellow
@@ -65,7 +65,9 @@ function Get-FlexiTime {
         }
     }
     elseif ($StartTime -and $LunchLengthInMinutes -and -not $EndTime) {
-        $EndTime = $StartTime.AddMinutes($WorkingDayInMinutes + $LunchLengthInMinutes + $RemainingTimeInMinutes)
+        $EndTime = $StartTime.AddMinutes($WorkingDayInMinutes + $LunchLengthInMinutes + $CarryOverTimeInMinutes)
+
+        $RemainingTimeInMinutes = 0
 
         Write-Host "End time: $($EndTime.ToString('HH:mm'))"
     }
@@ -74,8 +76,9 @@ function Get-FlexiTime {
         StartTime = $StartTime;
         LunchLengthInMinutes = $LunchLengthInMinutes;
         EndTime = $EndTime;
-        RemainingTimeInMinutes = $RemainingTimeInMinutes;
+        CarryOverTimeInMinutes = $CarryOverTimeInMinutes;
         WorkingDayInMinutes = $WorkingDayInMinutes;
+        RemainingTimeInMinutes = $RemainingTimeInMinutes;
     }
 }
 

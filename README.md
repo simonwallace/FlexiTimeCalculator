@@ -29,7 +29,7 @@ or
 - `[[-StartTime] <datetime>]`
 - `[[-LunchLengthInMinutes] <int>]`
 - `[[-EndTime] <datetime>]`
-- `[[-RemainingTimeInMinutes] <int>]`
+- `[[-CarryOverTimeInMinutes] <int>]`
 - `[[-WorkingDayInMinutes] <int>]` (default: `450`)
 - `[[-DefaultsFileLocation] <string>]` (default: `"Config.json"`)
 
@@ -49,8 +49,51 @@ Name                           Value
 StartTime                      03/07/2020 09:00:00
 LunchLengthInMinutes           30
 EndTime                        03/07/2020 17:00:00
-RemainingTimeInMinutes         0
+CarryOverTimeInMinutes         0
 WorkingDayInMinutes            450
+RemainingTimeInMinutes         0
+```
+
+#### `Get-FlexiTime -StartTime <dateTime> -LunchLengthInMinutes <int> -CarryOverTimeInMinutes <int>`
+
+Get the end time if the start time, lunch length, and carry over time are known.
+
+If the carry over time is less than 0, then extra time worked on a previous day will be carried over.
+
+```PowerShell
+Get-FlexiTime -StartTime 09:00 -LunchLengthInMinutes 30 -CarryOverTimeInMinutes -30
+```
+
+```Log
+End time: 16:30
+
+Name                           Value
+----                           -----
+StartTime                      03/07/2020 09:00:00
+LunchLengthInMinutes           30
+EndTime                        03/07/2020 16:30:00
+CarryOverTimeInMinutes         -30
+WorkingDayInMinutes            450
+RemainingTimeInMinutes         0
+```
+
+If the carry over time is more than 0, then time owed from a previous day will be carried over.
+
+```PowerShell
+Get-FlexiTime -StartTime 09:00 -LunchLengthInMinutes 30 -CarryOverTimeInMinutes 30
+```
+
+```Log
+End time: 17:30
+
+Name                           Value
+----                           -----
+StartTime                      03/07/2020 09:00:00
+LunchLengthInMinutes           30
+EndTime                        03/07/2020 17:30:00
+CarryOverTimeInMinutes         30
+WorkingDayInMinutes            450
+RemainingTimeInMinutes         0
 ```
 
 #### `Get-FlexiTime -StartTime <dateTime> -LunchLengthInMinutes <int> -EndTime <dateTime>`
@@ -71,8 +114,9 @@ Name                           Value
 StartTime                      03/07/2020 09:00:00
 LunchLengthInMinutes           30
 EndTime                        03/07/2020 17:00:00
-RemainingTimeInMinutes         0
+CarryOverTimeInMinutes         0
 WorkingDayInMinutes            450
+RemainingTimeInMinutes         0
 ```
 
 If the remaining time is more than 0, then the standard working day will not be complete by the supplied end time.
@@ -89,8 +133,9 @@ Name                           Value
 StartTime                      03/07/2020 09:00:00
 LunchLengthInMinutes           30
 EndTime                        03/07/2020 16:30:00
-RemainingTimeInMinutes         30
+CarryOverTimeInMinutes         0
 WorkingDayInMinutes            450
+RemainingTimeInMinutes         30
 ```
 
 If the remaining time is less than 0, then extra time will be worked during the day by the supplied end time.
@@ -107,18 +152,19 @@ Name                           Value
 StartTime                      03/07/2020 09:00:00
 LunchLengthInMinutes           30
 EndTime                        03/07/2020 17:15:00
-RemainingTimeInMinutes         -15
+CarryOverTimeInMinutes         0
 WorkingDayInMinutes            450
+RemainingTimeInMinutes         -15
 ```
 
-#### `Get-FlexiTime -StartTime <dateTime> -LunchLengthInMinutes <int> -EndTime <dateTime> -RemainingTimeInMinutes <int>`
+#### `Get-FlexiTime -StartTime <dateTime> -LunchLengthInMinutes <int> -EndTime <dateTime> -CarryOverTimeInMinutes <int>`
 
-Get the remaining time if the start time, lunch length, end time, and carry over remaining time are known.
+Get the remaining time if the start time, lunch length, end time, and carry over time are known.
 
-If the supplied remaining time is less than 0, then extra time worked on a previous way will be carried over.
+If the carry over time is less than 0, then extra time worked on a previous day will be carried over.
 
 ```PowerShell
-Get-FlexiTime -StartTime 09:00 -LunchLengthInMinutes 30 -EndTime 16:30 -RemainingTimeInMinutes -30
+Get-FlexiTime -StartTime 09:00 -LunchLengthInMinutes 30 -EndTime 16:30 -CarryOverTimeInMinutes -30
 ```
 
 ```Log
@@ -129,14 +175,15 @@ Name                           Value
 StartTime                      03/07/2020 09:00:00
 LunchLengthInMinutes           30
 EndTime                        03/07/2020 16:30:00
-RemainingTimeInMinutes         -30
+CarryOverTimeInMinutes         -30
 WorkingDayInMinutes            450
+RemainingTimeInMinutes         0
 ```
 
-If the supplied remaining time is more than 0, then time owed from a previous way will be carried over.
+If the carry over time is more than 0, then time owed from a previous day will be carried over.
 
 ```PowerShell
-Get-FlexiTime -StartTime 09:00 -LunchLengthInMinutes 30 -EndTime 16:30 -RemainingTimeInMinutes 30
+Get-FlexiTime -StartTime 09:00 -LunchLengthInMinutes 30 -EndTime 16:30 -CarryOverTimeInMinutes 30
 ```
 
 ```Log
@@ -147,6 +194,7 @@ Name                           Value
 StartTime                      03/07/2020 09:00:00
 LunchLengthInMinutes           30
 EndTime                        03/07/2020 16:30:00
-RemainingTimeInMinutes         60
+CarryOverTimeInMinutes         30
 WorkingDayInMinutes            450
+RemainingTimeInMinutes         60
 ```

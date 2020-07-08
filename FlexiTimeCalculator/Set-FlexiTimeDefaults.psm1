@@ -19,7 +19,7 @@ function Set-FlexiTimeDefaults {
 
         [Parameter()]
         [Nullable[int]]
-        $RemainingTimeInMinutes,
+        $CarryOverTimeInMinutes,
 
         [Parameter()]
         [Nullable[int]]
