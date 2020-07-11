@@ -15,6 +15,7 @@
     NestedModules = @(
         "Get-FlexiTime.psm1"
         "Get-FlexiTimeDefaults.psm1"
+        "Set-FlexiTime.psm1"
         "Set-FlexiTimeDefaults.psm1"
     )
 }

@@ -1,19 +1,19 @@
 function Get-FlexiTime {
     [CmdletBinding()]
     param (
-        [Parameter()]
+        [Parameter(Position = 0)]
         [Nullable[DateTime]]
         $StartTime,
 
-        [Parameter()]
+        [Parameter(Position = 1)]
         [int]
         $LunchTimeInMinutes,
 
-        [Parameter()]
+        [Parameter(Position = 2)]
         [Nullable[DateTime]]
         $EndTime,
 
-        [Parameter()]
+        [Parameter(Position = 3)]
         [int]
         $CarryOverTimeInMinutes,
 
@@ -25,6 +25,8 @@ function Get-FlexiTime {
         [string]
         $DefaultsFileLocation = "Config.json"
     )
+
+    [int] $RemainingTimeInMinutes = 0
 
     $defaults = Get-FlexiTimeDefaults $DefaultsFileLocation
 
