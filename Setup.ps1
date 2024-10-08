@@ -12,7 +12,7 @@ param (
 
 $MODULE_NAME = "FlexiTimeCalculator"
 
-$installDirectory = $env:PSModulePath.Split(';')[0]
+$installDirectory = $env:PSModulePath.Split([System.IO.Path]::PathSeparator)[0]
 
 if (Test-Path "$installDirectory/$MODULE_NAME") {
 
