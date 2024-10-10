@@ -1,5 +1,5 @@
 function Get-FlexiTime {
-    [CmdletBinding()]
+    [CmdletBinding(DefaultParameterSetName = "SuppliedDate")]
     param (
         [Parameter(Position = 0)]
         [Nullable[DateTime]]
@@ -21,6 +21,22 @@ function Get-FlexiTime {
         [int]
         $WorkingDayInMinutes = 450,
 
+        [Parameter(ParameterSetName = "AddDays", Mandatory)]
+        [int]
+        $AddDays,
+
+        [Parameter(ParameterSetName = "SubtractDays", Mandatory)]
+        [int]
+        $SubtractDays,
+
+        [Parameter(ParameterSetName = "Tomorrow", Mandatory)]
+        [switch]
+        $Tomorrow,
+
+        [Parameter(ParameterSetName = "Yesterday", Mandatory)]
+        [switch]
+        $Yesterday,
+
         [Parameter()]
         [string]
         $DefaultsFileLocation = "Config.json"
@@ -32,6 +48,39 @@ function Get-FlexiTime {
 
     foreach ($key in $defaults.Keys) {
         Set-Variable $key $defaults[$key]
+    }
+
+    if ($AddDays -or $SubtractDays -or $Tomorrow -or $Yesterday) {
+        if (-not $StartTime -and -not $EndTime) {
+            throw "StartTime or EndTime are required when using AddDays, SubtractDays, Tomorrow, or Yesterday arguments."
+        }
+
+        if ($AddDays -or $SubtractDays) {
+            $RelativeAddDays = $AddDays ? $AddDays : $SubtractDays * -1
+
+            if ($StartTime) {
+                $StartTime = $StartTime.AddDays($RelativeAddDays)
+            }
+
+            if ($EndTime) {
+                $EndTime = $EndTime.AddDays($RelativeAddDays)
+            }
+        }
+        elseif ($Tomorrow -or $Yesterday) {
+            $TodayAddDays = $Tomorrow ? 1 : -1
+
+            if ($StartTime) {
+                $Today = Get-Date -Hour $StartTime.Hour -Minute $StartTime.Minute -Second $StartTime.Second -Millisecond $StartTime.Millisecond
+
+                $StartTime = $Today.AddDays($TodayAddDays)
+            }
+
+            if ($EndTime) {
+                $Today = Get-Date -Hour $EndTime.Hour -Minute $EndTime.Minute -Second $EndTime.Second -Millisecond $EndTime.Millisecond
+
+                $EndTime = $Today.AddDays($TodayAddDays)
+            }
+        }
     }
 
     # If StartTime is after EndTime, assume that the working day
