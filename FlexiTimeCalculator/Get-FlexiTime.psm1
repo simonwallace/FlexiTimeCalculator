@@ -2,7 +2,7 @@ function Get-FlexiTime {
     [CmdletBinding(DefaultParameterSetName = "SuppliedDate")]
     param (
         [Parameter(Position = 0)]
-        [Nullable[DateTime]]
+        [Nullable[System.DateTimeOffset]]
         $StartTime,
 
         [Parameter(Position = 1)]
@@ -10,7 +10,7 @@ function Get-FlexiTime {
         $LunchTimeInMinutes,
 
         [Parameter(Position = 2)]
-        [Nullable[DateTime]]
+        [Nullable[System.DateTimeOffset]]
         $EndTime,
 
         [Parameter(Position = 3)]
