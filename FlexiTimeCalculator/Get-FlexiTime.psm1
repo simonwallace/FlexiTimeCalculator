@@ -118,9 +118,15 @@ function Get-FlexiTime {
     elseif ($StartTime -and -not $EndTime) {
         $EndTime = $StartTime.AddMinutes($WorkingDayInMinutes + $LunchTimeInMinutes + $CarryOverTimeInMinutes)
 
-        $RemainingTimeInMinutes = 0
-
         Write-Host "End time: $($EndTime.ToString('HH:mm'))"
+    }
+    elseif ($EndTime -and -not $StartTime) {
+        $StartTime = $EndTime.AddMinutes(-1 * ($WorkingDayInMinutes + $LunchTimeInMinutes + $CarryOverTimeInMinutes))
+
+        Write-Host "Start time: $($StartTime.ToString('HH:mm'))"
+    }
+    else {
+        throw "StartTime, EndTime, or both are required."
     }
 
     return [ordered]@{
